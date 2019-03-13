@@ -10,6 +10,7 @@ import { CharacterService } from './services/character.service';
 import { HeaderComponent } from './components/header/header.component';
 import {RouterModule} from "@angular/router";
 import {ROUTES} from "./app.routes";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {ROUTES} from "./app.routes";
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot(ROUTES, {useHash: false}),
   ],
   providers: [

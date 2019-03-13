@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ICharacter} from "../../entities/character.interface";
+import {CharacterService} from "../../services/character.service";
 
 @Component({
   selector: 'app-character-list',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CharacterListComponent implements OnInit {
 
-  constructor() { }
+  constructor(public characterService: CharacterService) { }
 
   ngOnInit() {
   }

@@ -1,11 +1,8 @@
 <app-filter></app-filter>
 <div class="app-character-list">
-  <div class="app-character-list__item"
-       [class.app-character-list__item_even]="false">
-    Luke Skywalker
-  </div>
-  <div class="app-character-list__item"
-       [class.app-character-list__item_even]="true">
-      Luke Skywalker
+  <div *ngFor="let character of (characterService.filteredCharacters | async); let i = index;"
+       class="app-character-list__item"
+       [class.app-character-list__item_even]="i % 2 == 0">
+    {{character.name}}
   </div>
 </div>

@@ -4,6 +4,6 @@ import {CharacterComponent} from "./components/character/character.component";
 
 export const ROUTES:Routes = [
   {path: '', component: CharacterListComponent},
-  {path: 'characters/:accessoryId', component: CharacterComponent },
+  {path: 'characters/:characterName', component: CharacterComponent },
   {path: '**', component: CharacterListComponent},
 ];
