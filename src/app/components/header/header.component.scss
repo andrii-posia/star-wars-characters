@@ -1,0 +1,10 @@
+.app-header {
+  display: flex;
+  justify-content: center;
+
+  &__logo {
+    width: 100px;
+    height: 43px;
+    cursor: pointer;
+  }
+}

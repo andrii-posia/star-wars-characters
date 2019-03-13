@@ -1,0 +1,16 @@
+.app-character-list {
+  &__item {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Courier New';
+    background-color: #50b4d8;
+    cursor: pointer;
+
+    &_even {
+      background-color: #eb3d54;
+    }
+  }
+}

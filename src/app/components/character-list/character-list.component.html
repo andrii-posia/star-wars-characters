@@ -1,3 +1,11 @@
-<p>
-  character-list works!
-</p>
+<app-filter></app-filter>
+<div class="app-character-list">
+  <div class="app-character-list__item"
+       [class.app-character-list__item_even]="false">
+    Luke Skywalker
+  </div>
+  <div class="app-character-list__item"
+       [class.app-character-list__item_even]="true">
+      Luke Skywalker
+  </div>
+</div>

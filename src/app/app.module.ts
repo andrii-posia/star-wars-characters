@@ -7,13 +7,15 @@ import { FilterComponent } from './components/filter/filter.component';
 import { CharacterListComponent } from './components/character-list/character-list.component';
 import { HttpService } from './services/http.service';
 import { CharacterService } from './services/character.service';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CharacterComponent,
     FilterComponent,
-    CharacterListComponent
+    CharacterListComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule
