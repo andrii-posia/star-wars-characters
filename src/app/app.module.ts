@@ -8,6 +8,8 @@ import { CharacterListComponent } from './components/character-list/character-li
 import { HttpService } from './services/http.service';
 import { CharacterService } from './services/character.service';
 import { HeaderComponent } from './components/header/header.component';
+import {RouterModule} from "@angular/router";
+import {ROUTES} from "./app.routes";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { HeaderComponent } from './components/header/header.component';
     HeaderComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(ROUTES, {useHash: false}),
   ],
   providers: [
     HttpService,
