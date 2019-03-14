@@ -8,8 +8,8 @@ import {concatAll, concatMap, map, mergeAll, mergeMap} from "rxjs/internal/opera
 export class HttpService {
   constructor(protected http: HttpClient) {}
 
-  getCharacters(page: number = 1): Observable<[ICharacter[], number]> {
+  getCharacters(page: number = 1): Observable<any[]> {
     const url = `https://swapi.co/api/people/?page=${page}`;
-    return <Observable<[ICharacter[], number]>> this.http.get(url).pipe(map(resp => [resp['results'], resp['count']]));
+    return <Observable<any[]>> this.http.get(url).pipe(map(resp => [resp['results'], resp['count']]));
   }
 }

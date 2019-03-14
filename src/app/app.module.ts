@@ -11,6 +11,9 @@ import { HeaderComponent } from './components/header/header.component';
 import {RouterModule} from "@angular/router";
 import {ROUTES} from "./app.routes";
 import {HttpClientModule} from "@angular/common/http";
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {MatAutocompleteModule, MatInputModule, MatSelectModule} from '@angular/material';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -22,8 +25,14 @@ import {HttpClientModule} from "@angular/common/http";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES, {useHash: false}),
+    FormsModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatSelectModule,
+    ReactiveFormsModule,
   ],
   providers: [
     HttpService,

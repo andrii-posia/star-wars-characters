@@ -1,0 +1,17 @@
+.app-filter {
+  min-width: 150px;
+  //max-width: 300px;
+  //width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  &__field {
+    //width: 100%;
+    margin: 0 10px;
+
+    &_year {
+      width: 50px;
+    }
+  }
+}

@@ -2,9 +2,27 @@
   display: flex;
   justify-content: center;
 
+  &__link {
+    cursor: pointer;
+    outline : none;
+
+    &:hover {
+      animation: .5s rotate-disappear linear;
+    }
+  }
+
   &__logo {
     width: 100px;
     height: 43px;
-    cursor: pointer;
+  }
+
+  &__title {
+    text-align: center;
+  }
+
+  @keyframes rotate-disappear {
+    100% {
+      transform: rotate(3turn) scale(0);
+    }
   }
 }
