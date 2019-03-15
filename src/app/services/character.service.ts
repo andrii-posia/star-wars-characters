@@ -2,101 +2,140 @@ import {Injectable} from "@angular/core";
 import {HttpService} from "./http.service";
 import {ICharacter} from "../entities/character.interface";
 import {BehaviorSubject, from} from "rxjs";
-import { finalize } from 'rxjs/operators';
-import {concatMap, mergeMap} from "rxjs/internal/operators";
 import {IFilter} from "../entities/filter.interface";
+import {AssistService} from "./assist.service";
 
 @Injectable()
 export class CharacterService {
 
   filteredCharacters: BehaviorSubject<ICharacter[]> = new BehaviorSubject([]);
-  isCharactersLoaded: boolean;
+  private isDataLoadedMap: Map<string, boolean> = new Map<string, boolean>();
   private characters: ICharacter[] = [];
 
+  optionsMap: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
+
   constructor(private httpService: HttpService) {
+    this.isDataLoadedMap.set('movies', false);
+    this.isDataLoadedMap.set('species', false);
+    this.isDataLoadedMap.set('spaceships', false);
+    this.isDataLoadedMap.set('characters', false);
+
+
+
     this.initAllCharacters();
+    this.initMovies();
+    this.initSpecie();
+    this.initStarships();
+  }
+
+  get isAllDataLoaded() {
+    return Array.from(this.isDataLoadedMap.values()).every((value) => {
+      return value;
+    });
+  }
+
+  resetFilteredCharacters() {
+    this.filteredCharacters.next(this.characters);
   }
 
   filterCharacters(filter: IFilter) {
     this.filteredCharacters.next(this.characters.filter((character) => {
       return this.isFilteredByFilm(character.films, filter.film)
           && this.isFilteredBySpecie(character.species, filter.specie)
+          && this.isFilteredByYear(character.birth_year, filter)
           && this.isFilteredByStarship(character.starships, filter.starship);
     }));
   }
 
   getCharacterByName(name: string): ICharacter {
     return this.characters.find((character) => {
-      return CharacterService.stringToSlug(character.name) === CharacterService.stringToSlug(name);
+      return AssistService.stringToSlug(character.name) === AssistService.stringToSlug(name);
     });
   }
 
-  // Convert to strict URL from string
-  static stringToSlug(str) {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
-    str = str.toLowerCase();
+  private isFilteredByYear(birthYearBB: string, filter: IFilter) {
+    const birthYear = this.getRealYear(birthYearBB);
+    const fromYear = this.getRealYear(filter.birthYearFrom);
+    const toYear = this.getRealYear(filter.birthYearTo);
 
-    // remove accents, swap ñ for n, etc
-    const from = 'àáäâèéëêìíïîòóöôùúüûñç·/_,:;',
-      to  = 'aaaaeeeeiiiioooouuuunc------';
-    for (let i = 0, l = from.length ; i < l ; i++) {
-      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    // if fromYear and toYear empty
+    if (fromYear === undefined && toYear === undefined) return true;
+
+    if (birthYear === undefined) return false;
+
+    if (fromYear  !== undefined && toYear === undefined) {
+      return fromYear <= birthYear;
     }
 
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-      .replace(/\s+/g, '-') // collapse whitespace and replace by -
-      .replace(/-+/g, '-'); // collapse dashes
+    if (fromYear === undefined && toYear !== undefined) {
+      return birthYear <= toYear;
+    }
 
-    return str;
+    return fromYear <= birthYear && birthYear <= toYear;
+  }
+
+  private getRealYear(yearBB: string) {
+    const yearArr = yearBB.split(/ABY|BBY/),
+      year = yearArr.length > 1 && yearArr[0].length > 0 ? yearArr[0] : undefined;
+
+    if (year === undefined || year == 'null' ) return undefined;
+
+    return Number(yearBB.search(/ABY/) > -1 ? year : -year);
   }
 
   private isFilteredBySpecie(species: string[], filterSpecie: string) {
-    return filterSpecie ? species.some((starship) => starship === filterSpecie) : true;
+    return filterSpecie ? species.some((specie) => this.optionsMap.get('species').get(specie) === filterSpecie) : true;
   }
 
   private isFilteredByStarship(starships: string[], filterStarship: string) {
-    return filterStarship ? starships.some((starship) => starship === filterStarship) : true;
+    return filterStarship ? starships.some((starship) => this.optionsMap.get('starships').get(starship) === filterStarship) : true;
   }
 
   private isFilteredByFilm(films: string[], filterFilm: string) {
-    return filterFilm ? films.some((film) => film === filterFilm) : true;
+    return filterFilm ? films.some((film) => this.optionsMap.get('movies').get(film) === filterFilm) : true;
   }
 
-  // Request first page, calculate number of pages and request others, add to characters
-  private initAllCharacters() {
-    this.httpService.getCharacters().pipe(
-      concatMap(([characters, count]) => {
-        this.addNewCharacters(characters);
-        return from(this.generateNextPages(count, characters.length)).pipe(
-          mergeMap(page => this.httpService.getCharacters(page))
-        );
-      }),
-      finalize(() => {
-        this.isCharactersLoaded = true;
-      })
-    ).subscribe(([characters, count]) => {
-      this.addNewCharacters(characters);
+  initMovies() {
+    this.httpService.getMovies().subscribe((movies) => {
+      const films = new Map<string, string>();
+      this.optionsMap.set('movies', films);
 
-      // Add to filtered only when all characters arrived
-      if (this.characters.length >= count) {
-        this.filteredCharacters.next(this.characters);
-      }
+      movies.forEach((movie) => {
+        films.set(movie.url, movie.title);
+        this.isDataLoadedMap.set('movies', true);
+      });
     });
   }
 
-  private addNewCharacters(characters: ICharacter[]): void {
-    this.characters = this.characters.concat(characters);
+  initSpecie() {
+    this.httpService.getSpecies().subscribe((species) => {
+      const spec = new Map<string, string>();
+      this.optionsMap.set('species', spec);
+
+      species.forEach((specie) => {
+        spec.set(specie.url, specie.name);
+        this.isDataLoadedMap.set('species', true);
+      });
+    });
   }
 
-  //Generate Array of Pages From
-  private generateNextPages(numberOfCharacters: number, numberPerPage: number, fromPage: number = 2): number[] {
-    const numberOfPages = Math.ceil(numberOfCharacters / numberPerPage);
-    let pages: number[] = [];
+  initStarships() {
+    this.httpService.getStarships().subscribe((starships) => {
+      const ships = new Map<string, string>();
+      this.optionsMap.set('starships', ships);
 
-    for (let i = fromPage; i <= numberOfPages; i++) {
-      pages.push(i);
-    }
+      starships.forEach((starships) => {
+        ships.set(starships.url, starships.name);
+        this.isDataLoadedMap.set('spaceships', true);
+      });
+    });
+  }
 
-    return pages;
+  private initAllCharacters() {
+    this.httpService.getCharacters().subscribe((characters) => {
+      this.characters = this.characters.concat(characters);
+      this.filteredCharacters.next(this.characters);
+      this.isDataLoadedMap.set('characters', true);
+    });
   }
 }

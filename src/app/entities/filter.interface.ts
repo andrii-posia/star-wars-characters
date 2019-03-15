@@ -1,5 +1,6 @@
 export class IFilter {
-  birth_year: string;
+  birthYearFrom: string;
+  birthYearTo: string;
   film: string;
   specie: string;
   starship: string;

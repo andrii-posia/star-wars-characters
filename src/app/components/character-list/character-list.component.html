@@ -2,6 +2,7 @@
 <div class="app-character-list">
   <div *ngFor="let character of (characterService.filteredCharacters | async); let i = index;"
        class="app-character-list__item"
+       routerLink="/characters/{{character.name | spaceToDash}}"
        [class.app-character-list__item_even]="i % 2 == 0">
     {{character.name}}
   </div>

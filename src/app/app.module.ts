@@ -14,6 +14,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {MatAutocompleteModule, MatInputModule, MatSelectModule} from '@angular/material';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {SpaceToDashPipe} from "./pipes/space-to-dash.pipe";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     CharacterComponent,
     FilterComponent,
     CharacterListComponent,
-    HeaderComponent
+    HeaderComponent,
+    SpaceToDashPipe
   ],
   imports: [
     BrowserModule,

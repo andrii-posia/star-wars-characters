@@ -1,2 +1,3 @@
 <app-header></app-header>
-<router-outlet *ngIf="characterService.isCharactersLoaded"></router-outlet>
+<div *ngIf="!characterService.isAllDataLoaded" class="app-main-loader"></div>
+<router-outlet *ngIf="characterService.isAllDataLoaded"></router-outlet>

@@ -2,18 +2,18 @@
   <span class="app-character__title">{{character.name}}:</span>
   <div class="app-character__details-wrapper">
     <div class="app-character__item app-character__birth_year">{{character.birth_year}}</div>
-    <div class="app-character__item app-character__species">/<span *ngFor="let specie of character.species">{{specie}}/</span></div>
+    <div class="app-character__item app-character__species">/<span *ngFor="let specie of character.species">{{this.characterService.optionsMap.get("species").get(specie)}}/</span></div>
   </div>
   <div class="app-character__details-wrapper">
     <div class="app-character__list-wrapper">
       <div *ngFor="let film of character.films; let i = index;"
            class="app-character__item app-character__movie"
-           [class.app-character__movie_even]="i % 2 == 0">{{film}}</div>
+           [class.app-character__movie_even]="i % 2 == 0">{{this.characterService.optionsMap.get("movies").get(film)}}</div>
     </div>
     <div class="app-character__list-wrapper">
-      <div *ngFor="let starships of character.starships; let i = index;"
+      <div *ngFor="let starship of character.starships; let i = index;"
            class="app-character__item app-character__spaceship"
-           [class.app-character__spaceship_even]="i % 2 == 0">{{starships}}</div>
+           [class.app-character__spaceship_even]="i % 2 == 0">{{this.characterService.optionsMap.get("starships").get(starship)}}</div>
     </div>
   </div>
 </div>

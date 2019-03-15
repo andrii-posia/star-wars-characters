@@ -7,11 +7,18 @@
   flex-wrap: wrap;
 
   &__field {
-    //width: 100%;
+    min-width: 250px;
     margin: 0 10px;
 
     &_year {
       width: 50px;
+      min-width: 50px;
+      margin-left: 0;
+    }
+
+    &_year-set {
+      width: 100px;
+      min-width: 100px;
     }
   }
 }

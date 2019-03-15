@@ -2,7 +2,7 @@
   <mat-form-field class="app-filter__field">
     <input type="text" placeholder="Specie" aria-label="Specie" matInput formControlName="specie" [matAutocomplete]="specie">
     <mat-autocomplete autoActiveFirstOption #specie="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      <mat-option *ngFor="let option of (filteredOptions.get('species')) | async" [value]="option">
         {{option}}
       </mat-option>
     </mat-autocomplete>
@@ -10,7 +10,7 @@
   <mat-form-field class="app-filter__field">
     <input type="text" placeholder="Spaceship" aria-label="Spaceship" matInput formControlName="spaceship" [matAutocomplete]="spaceship">
     <mat-autocomplete autoActiveFirstOption #spaceship="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      <mat-option *ngFor="let option of (filteredOptions.get('starships')) | async" [value]="option">
         {{option}}
       </mat-option>
     </mat-autocomplete>
@@ -18,28 +18,28 @@
   <mat-form-field class="app-filter__field">
     <input type="text" placeholder="Movie" aria-label="Movie" matInput formControlName="movie" [matAutocomplete]="movie">
     <mat-autocomplete autoActiveFirstOption #movie="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      <mat-option *ngFor="let option of (filteredOptions.get('movies')) | async" [value]="option">
         {{option}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
   <div>
-    <mat-form-field class="app-filter__field">
+    <mat-form-field class="app-filter__field app-filter__field_year-set">
       <input type="number" min="0" placeholder="From year" aria-label="From year" matInput formControlName="fromYear">
     </mat-form-field>
     <mat-form-field class="app-filter__field app-filter__field_year">
-      <mat-select placeholder="BY">
+      <mat-select placeholder="BY" formControlName="fromYearBB">
         <mat-option [value]="'BBY'">BBY</mat-option>
         <mat-option [value]="'ABY'">ABY</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field class="app-filter__field">
+    <mat-form-field class="app-filter__field app-filter__field_year-set">
       <input type="number" min="0" placeholder="To year" aria-label="To year" matInput formControlName="toYear">
     </mat-form-field>
     <mat-form-field class="app-filter__field app-filter__field_year">
-      <mat-select placeholder="BY">
+      <mat-select placeholder="BY" formControlName="toYearBB">
         <mat-option [value]="'BBY'">BBY</mat-option>
         <mat-option [value]="'ABY'">ABY</mat-option>
       </mat-select>
